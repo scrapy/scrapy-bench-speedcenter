@@ -1,0 +1,2 @@
+codespeed==0.11.0
+Django==1.8.18
