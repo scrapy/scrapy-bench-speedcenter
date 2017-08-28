@@ -1,3 +1,5 @@
 center/center/data.db
+center/center/app.log
+center/center/sitestatic
 __pycache__/
 *.py[cod]

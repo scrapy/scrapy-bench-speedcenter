@@ -1,0 +1,11 @@
+version: '2.0'
+
+services:
+  app:
+    build: .
+    environment:
+      - SECRET_KEY
+    volumes:
+      - ./data.db:/speedcenter/center/center/data.db
+    ports:
+      - "8000:8000"

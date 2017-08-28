@@ -2,14 +2,20 @@
 # Django settings for a Codespeed project.
 import os
 
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', '1')))
 TEMPLATE_DEBUG = DEBUG
+if DEBUG:
+    SECRET_KEY = 'as%n_m#)^vee2pe91^^@c))sl7^c6t-9r8n)_69%)2yt+(la2&'
+else:
+    SECRET_KEY = os.environ['SECRET_KEY']
+    assert SECRET_KEY
+    ALLOWED_HOSTS = ['*']
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 TOPDIR = os.path.split(BASEDIR)[1]
 
 #: The directory which should contain checked out source repositories:
-REPOSITORY_BASE_PATH = os.path.join(BASEDIR, "repos")
+REPOSITORY_BASE_PATH = os.path.join(BASEDIR, 'repos')
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
@@ -23,21 +29,14 @@ DATABASES = {
     }
 }
 
-TIME_ZONE = 'America/Chicago'
-
+TIME_ZONE = 'UTC'
 LANGUAGE_CODE = 'en-us'
-
 SITE_ID = 1
-
 USE_I18N = False
 
-MEDIA_ROOT = os.path.join(BASEDIR, "media")
-
+MEDIA_ROOT = os.path.join(BASEDIR, 'media')
 MEDIA_URL = '/media/'
-
 ADMIN_MEDIA_PREFIX = '/static/admin/'
-
-SECRET_KEY = 'as%n_m#)^vee2pe91^^@c))sl7^c6t-9r8n)_69%)2yt+(la2&'
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -52,20 +51,34 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-if DEBUG:
-    import traceback
-    import logging
 
-    # Define a class that logs unhandled errors
-    class LogUncatchedErrors:
-        def process_exception(self, request, exception):
-            logging.error("Unhandled Exception on request for %s\n%s",
-                          request.build_absolute_uri(), traceback.format_exc())
-    # And add it to the middleware classes
-    MIDDLEWARE_CLASSES += ('center.settings.LogUncatchedErrors',)
-
-    # set shown level of logging output to debug
-    logging.basicConfig(level=logging.INFO)
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s',
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASEDIR, 'app.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 ROOT_URLCONF = '{0}.urls'.format(TOPDIR)
 
