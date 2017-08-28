@@ -65,7 +65,7 @@ if DEBUG:
     MIDDLEWARE_CLASSES += ('center.settings.LogUncatchedErrors',)
 
     # set shown level of logging output to debug
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
 
 ROOT_URLCONF = '{0}.urls'.format(TOPDIR)
 
