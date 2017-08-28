@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# TODO - start nginx and server.py
+set -e
+
+bash /scrapy-bench/start-servers.sh
 
 cd center
 uwsgi \

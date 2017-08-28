@@ -25,11 +25,12 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASEDIR, 'data.db'),
+        'NAME': os.path.join(BASEDIR, 'db', 'data.db'),
     }
 }
 
 TIME_ZONE = 'UTC'
+USE_TZ = True
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
 USE_I18N = False
